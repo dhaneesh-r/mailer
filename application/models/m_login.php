@@ -7,24 +7,46 @@ class M_login extends CI_Model {
         parent::__construct();
     }
     
-    function authenticate()
+    function authenticate($input)
     {
+    	
+    	$url = $this->_url."/sessions";
     	try {
-
-    	$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, "http://www.example.com/path/to/form");
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POST, true);
-
-      $data = array(
-         'foo' => 'foo foo foo',
-         'bar' => 'bar bar bar',
-         'baz' => 'baz baz baz'
-      );
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-     $output = curl_exec($ch);
-     curl_close($ch);
-     } catch (Exception $e) {
-        return false
-    }
+    	    $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POST, true);
+          //curl_setopt($ch,CURLOPT_HTTPHEADER,array('HeaderName: HeaderValue'));
+     		 $data = array(
+         	'username' => $input['username'],
+				'password' => $input['password'],
+         	
+      	);
+      	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+     		$output = curl_exec($ch);
+     		curl_close($ch);
+     		$userInfo = json_decode($output);
+     		return $userInfo;
+     		} catch (Exception $e) {
+        		return false;
+        	}
+    	}
+    function getAllPatients($authToken){
+    	
+    	$url = $this->_url."/patients";
+    	try {
+    	    $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch,CURLOPT_HTTPHEADER,array("X-AUTH-TOKEN: $authToken"));
+     		$output = curl_exec($ch);
+     		curl_close($ch);
+     		$userInfo = json_decode($output);
+     		return $userInfo;
+     		} catch (Exception $e) {
+        		return false;
+        	}
+    	   
+    	}
+  }
  ?>
