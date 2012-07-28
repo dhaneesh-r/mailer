@@ -9,15 +9,17 @@ class M_mail extends CI_Model {
     
     function setRole($input)
     {
-    	$url = $this->_url."/sessions";
+    	$url = $this->_url."/session";
+    	$token = $this->session->userdata('token');
     	try {
-    	    $ch = curl_init();
+    	   $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH" ); 
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch,CURLOPT_HTTPHEADER,array("X-AUTH-TOKEN: $token"));
 			curl_setopt($ch, CURLOPT_POST, true);
      		 $data = array(
-         	'user_role_id' => $input['role'],
+         	'user_role_id' => 13076,
       	);
       	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
      		$output = curl_exec($ch);

@@ -32,6 +32,7 @@ class Mail extends CI_Controller {
       if($setRole){
       	$token = $this->session->userdata('token');
       	$data['patients'] = $this->m_login->getAllPatients($token);
+      	print_r($data['patients']);die;
 		   $this->load->view('includes/v_header.php');
 		   $this->load->view('v_patients.php', $data);
 		   $this->load->view('includes/v_footer.php');

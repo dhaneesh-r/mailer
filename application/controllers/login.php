@@ -20,6 +20,7 @@ class Login extends CI_Controller {
 		   $this->load->view('includes/v_footer.php');
 		}else{
 			$data['userRoles'] = $this->m_login->getRoles($userInfo->auth_token);
+			//print_r($data['userRoles']);die;
 			$this->load->view('includes/v_header.php');
 		   $this->load->view('v_roles.php', $data);
 		   $this->load->view('includes/v_footer.php');

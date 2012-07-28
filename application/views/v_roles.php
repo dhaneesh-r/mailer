@@ -3,7 +3,7 @@
   <?php
    foreach($userRoles->roles as $role){
   ?>
-   <input type="radio" name="role" value="<?php echo $role->id ?>" /><?php echo $role->role_name ?>
+   <input type="radio" name="role" value="<?php echo $role->practice->id ?>" /><?php echo $role->practice->name ?>
   <?php } ?>
 
 <input type="submit" value="Send mail" /> 
