@@ -14,15 +14,16 @@ class M_mail extends CI_Model {
     	try {
     	   $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH" ); 
+			// curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST" ); 
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch,CURLOPT_HTTPHEADER,array("X-AUTH-TOKEN: $token"));
+			curl_setopt($ch,CURLOPT_HTTPHEADER,array("X-AUTH-TOKEN: $token", "X-HTTP-METHOD-OVERRIDE: PATCH"));
 			curl_setopt($ch, CURLOPT_POST, true);
      		 $data = array(
-         	'user_role_id' => 13076,
+         	'user_role_id' => 13065,
       	);
       	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
      		$output = curl_exec($ch);
+     		//print_r($output);die;
      		curl_close($ch);
      		return true;
      		} catch (Exception $e) {
