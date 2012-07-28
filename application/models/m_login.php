@@ -9,44 +9,46 @@ class M_login extends CI_Model {
     
     function authenticate($input)
     {
+       	return $this->_urlCaller("sessions", "",$input);
     	
-    	$url = $this->_url."/sessions";
-    	try {
-    	    $ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_POST, true);
-          //curl_setopt($ch,CURLOPT_HTTPHEADER,array('HeaderName: HeaderValue'));
-     		 $data = array(
-         	'username' => $input['username'],
-				'password' => $input['password'],
-         	
-      	);
-      	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-     		$output = curl_exec($ch);
-     		curl_close($ch);
-     		$userInfo = json_decode($output);
-     		return $userInfo;
-     		} catch (Exception $e) {
-        		return false;
-        	}
-    	}
-    function getAllPatients($authToken){
+    }
+    function getAllPatients($authToken)
+    {
+    	   return $this->_urlCaller("patients",$authToken);
+    }
+    function getRoles($authToken)
+    {
     	
-    	$url = $this->_url."/patients";
-    	try {
-    	    $ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-         curl_setopt($ch,CURLOPT_HTTPHEADER,array("X-AUTH-TOKEN: $authToken"));
-     		$output = curl_exec($ch);
-     		curl_close($ch);
-     		$userInfo = json_decode($output);
-     		return $userInfo;
-     		} catch (Exception $e) {
-        		return false;
-        	}
+    	  return $this->_urlCaller("roles",$authToken);
     	   
-    	}
+    }
+    	
+    private function _urlCaller($url,$authToken="",$post = array())
+    {
+    	 $url = $this->_url."/".$url;
+    	 try {
+	    	    $ch = curl_init();
+				 curl_setopt($ch, CURLOPT_URL, $url);
+				 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				 if(count($post)) > 0{
+					curl_setopt($ch, CURLOPT_POST, true);
+		     		 $data = array(
+		         	'username' => $post['username'],
+						'password' => $post['password'],
+		      	);
+	      	    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+				}
+				if($authToken != ""){
+	             curl_setopt($ch,CURLOPT_HTTPHEADER,array("X-AUTH-TOKEN: $authToken"));
+	         }
+	     		$output = curl_exec($ch);
+	     		curl_close($ch);
+	     		$userInfo = json_decode($output);
+	     		return $userInfo;
+     		} catch (Exception $e) {
+        		return false;
+        	}	
+    }
+    	
   }
  ?>
