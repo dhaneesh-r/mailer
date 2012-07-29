@@ -8,8 +8,9 @@ class Mail extends CI_Controller {
       $this->load->library('email');
       $mailSendError = array();
       $input =  $this->input->post();
-      $this->email->from('your@example.com', 'Your Name');
-      $this->email->subject('Email Test');
+      $from = $this->session->userdata('username');
+      $this->email->from($from);
+      $this->email->subject($input['subject']);
       $patientsInfo =  $input['patients'];
       foreach($patientsInfo as $patient){
 	     	$infoArr = explode("||",$patient);
@@ -24,6 +25,12 @@ class Mail extends CI_Controller {
 	        continue;
 	     }
       }
+		$this->load->model('m_login');
+      $token = $this->session->userdata('token');
+      $data['patients'] = $this->m_login->getAllPatients($token);
+		$this->load->view('includes/v_header.php');
+		$this->load->view('v_patients.php', $data);
+		$this->load->view('includes/v_footer.php');
 	}
 	public function addRole() {
 		$this->load->model('m_mail');
@@ -32,7 +39,6 @@ class Mail extends CI_Controller {
       if($setRole){
       	$token = $this->session->userdata('token');
       	$data['patients'] = $this->m_login->getAllPatients($token);
-      	print_r($data['patients']);die;
 		   $this->load->view('includes/v_header.php');
 		   $this->load->view('v_patients.php', $data);
 		   $this->load->view('includes/v_footer.php');

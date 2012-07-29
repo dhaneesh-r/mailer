@@ -12,3 +12,8 @@ top:200px;
 position: relative;}
  div.login-box p label{ width: 90px;float: left;text-align: right;}
 .ui-multiselect div.selected{ float: right;}
+.error{ color: #FE2E2E;}
+div.patients-name{ width: 40%;float: left;}
+div.selected-patients{ margin: 30px 0 30px 10px;}
+.selected-block{ background-color: #5882FA;padding: 5px;color: #FFF;margin:3px;}
+.selected-block a.close{ color: #F5A9BC;font-weight: normal;padding: 0 0 0 4px;}

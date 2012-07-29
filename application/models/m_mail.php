@@ -19,7 +19,7 @@ class M_mail extends CI_Model {
 			curl_setopt($ch,CURLOPT_HTTPHEADER,array("X-AUTH-TOKEN: $token", "X-HTTP-METHOD-OVERRIDE: PATCH"));
 			curl_setopt($ch, CURLOPT_POST, true);
      		 $data = array(
-         	'user_role_id' => 13065,
+         	'user_role_id' => $input['role'],
       	);
       	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
      		$output = curl_exec($ch);

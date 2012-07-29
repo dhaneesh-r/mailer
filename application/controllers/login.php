@@ -9,9 +9,25 @@ class Login extends CI_Controller {
 	}
 	public function authenticate()
 	{
+		$input = $this->input->post();
+		if($input['username'] == "" || $input['password'] == ""){
+			$data['error'] = "Please Enter login credentials";
+			$this->load->view('includes/v_header.php');
+		   $this->load->view('v_login.php', $data);
+		   $this->load->view('includes/v_footer.php');
+		   return false;
+		}
 		$this->load->model('m_login');
-		$userInfo = $this->m_login->authenticate($this->input->post());
+		$userInfo = $this->m_login->authenticate($input);
+		if(!isset($userInfo->auth_token)){
+			$data['error'] = "Failed to authenticate login credentials";
+			$this->load->view('includes/v_header.php');
+		   $this->load->view('v_login.php', $data);
+		   $this->load->view('includes/v_footer.php');
+		   return false;
+		}
 		$this->session->set_userdata('token', $userInfo->auth_token);
+		$this->session->set_userdata('username', $input['username']);
 		$rolesInfo = $this-> _checkUserRoles($userInfo);
 		if($rolesInfo){
 		   $data['patients'] = $this->m_login->getAllPatients($userInfo->auth_token);
